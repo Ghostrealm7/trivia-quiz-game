@@ -46,37 +46,22 @@ function App() {
       let response = await axios.get(
         "https://opentdb.com/api.php?amount=5&difficulty=easy&type=multiple",
       );
-      let refinedQuizQuestions = await response.data.results;
-      console.log(refinedQuizQuestions);
+      let quizQuestions = await response.data.results;
+      console.log(quizQuestions);
 
-      const NewArray = refinedQuizQuestions.map((quizQuestion) => {
+      // Save correct_answer in the incorrect answer array, then shuffle the incorrect answer array.
+      const NewArray = quizQuestions.map((quizQuestion) => {
         const NewAnswers = [
           ...quizQuestion.incorrect_answers,
           quizQuestion.correct_answer,
         ];
-        console.log(NewAnswers);
+        const ShuffledAnswers = shuffle(NewAnswers);
+        return { ...quizQuestion, incorrect_answers: ShuffledAnswers };
       });
-      // const ShuffledAndRefinedQuizQuestions = refinedQuizQuestions.map(
-      //   (QuizQuestion) => {
-      //     const newIncorrectAnswers = [
-      //       ...question.incorrect_answers,
-      //       question.correct_answer,
-      //     ];
-      //     const shuffledArray = shuffle(newIncorrectAnswers);
-      //     refinedQuizQuestions = {
-      //       ...refinedQuizQuestions,
-      //       incorrect_answers: shuffledArray,
-      //     };
-      //     console.log(question);
-      //   },
-      //);
-
-      // setQuizData(ShuffledAndRefinedQuizQuestions);
+      console.log(NewArray);
     }
     apiData();
   }, []);
-
-  console.log(quizData);
 
   return (
     <main>
