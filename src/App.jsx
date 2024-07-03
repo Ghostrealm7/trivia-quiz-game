@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { nanoid } from "nanoid";
 import "./styles.css";
 import HomePage from "./HomePage";
 import QuizPage from "./QuizPage";
@@ -10,6 +11,19 @@ function App() {
   const [homePage, setHomePage] = useState(true);
   const [darkMode, setDarkMode] = useState(false);
   const [quizData, setQuizData] = useState([]);
+  const [gameOver, setGameOver] = useState(false);
+
+  function checkAnswers() {
+    for (let i = 0; i < quizData.length; i++) {
+      if (quizData[i].correct_answer === quizData[i].selected_answer) {
+        console.log(`Your answer ${quizData[i].selected_answer} is correct`);
+      } else {
+        console.log(
+          `Your answer ${quizData[i].selected_answer} is incorrect, the correct answer is ${quizData[i].correct_answer}`,
+        );
+      }
+    }
+  }
 
   // Shuffle algorithm - Fisher-Yates shuffle
   function shuffle(array) {
@@ -19,14 +33,24 @@ function App() {
     }
     return array;
   }
+  //function to update quizData array with selected_answer key
+  function insertSelectedAnswer(event, id) {
+    const updatedQuiz = quizData.map((quizQuestion) => {
+      // if (id == quizQuestion.id) {
+      //   return { ...quizQuestion, selected_answer: event.target.value };
+      // } else {
+      //   return { ...quizQuestion };
+      // }
+      return id === quizQuestion.id
+        ? { ...quizQuestion, selected_answer: event.target.value }
+        : quizQuestion;
+    });
+    setQuizData((prevQuizData) => (prevQuizData = updatedQuiz));
+    console.log(quizData);
+  }
 
   function changePage() {
     setHomePage(!homePage);
-    // setArray((prevArray) => {
-    //   const newField_2 = [...prevArray.field_2, prevArray.field_1]; //Access the array inside the object
-    //   const shuffledArray = shuffle(newField_2);
-    //   return { ...prevArray, field_2: shuffledArray }; //we are now setting the new array inside the object
-    // });
   }
 
   //tast for tomorrow, put setquizdata in a function, run a for loop to populate the new array where the correct answer is randomly put with fake answers and save it in another array
@@ -44,7 +68,12 @@ function App() {
           quizQuestion.correct_answer,
         ];
         const shuffledAnswers = shuffle(newAnswers);
-        return { ...quizQuestion, incorrect_answers: shuffledAnswers };
+        return {
+          id: nanoid(),
+          ...quizQuestion,
+          incorrect_answers: shuffledAnswers,
+          selected_answer: "",
+        };
       });
       setQuizData(newArray);
     }
@@ -56,7 +85,11 @@ function App() {
       {homePage ? (
         <HomePage changePage={changePage} />
       ) : (
-        <QuizPage quizData={quizData} />
+        <QuizPage
+          quizData={quizData}
+          insertSelectedAnswer={insertSelectedAnswer}
+          checkAnswers={checkAnswers}
+        />
       )}
     </main>
   );

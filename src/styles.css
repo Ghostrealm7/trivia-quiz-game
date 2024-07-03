@@ -58,3 +58,8 @@ main {
   align-items: center;
   gap: 10px;
 }
+
+.quiz-container {
+  padding: 20px;
+  margin: 20px;
+}
