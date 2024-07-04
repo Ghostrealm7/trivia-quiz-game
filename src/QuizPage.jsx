@@ -4,25 +4,27 @@ function QuizPage({ quizData, insertSelectedAnswer, checkAnswers }) {
   let quizElements = quizData.map((quiz) => {
     return (
       <div key={quiz.id} className="question-container">
-        <p>{quiz.question}</p>
-        {quiz.incorrect_answers.map((answer) => (
-          <fieldset>
-            <input
-              className="radio-input"
-              name={quiz.id}
-              type="radio"
-              id={`option-${quiz.id}`}
-              value={answer}
-              checked={quiz.selected_answer === answer}
-              onChange={(event) => {
-                insertSelectedAnswer(event, quiz.id);
-              }}
-            />
-            <label className="label" htmlFor={`option-${quiz.id}`}>
-              {answer}
-            </label>
-          </fieldset>
-        ))}
+        <h3>{quiz.question}</h3>
+
+        <div className="answers-container">
+          {quiz.incorrect_answers.map((answer, index) => (
+            <div className="button" key={index}>
+              <input
+                name={quiz.id}
+                type="radio"
+                id={`option-${quiz.id}-${index}`}
+                value={answer}
+                checked={quiz.selected_answer === answer}
+                onChange={(event) => {
+                  insertSelectedAnswer(event, quiz.id);
+                }}
+              />
+              <label className="label" htmlFor={`option-${quiz.id}-${index}`}>
+                {answer}
+              </label>
+            </div>
+          ))}
+        </div>
       </div>
     );
   });
