@@ -63,3 +63,30 @@ main {
   padding: 20px;
   margin: 20px;
 }
+/* 
+.radio-input {
+  position: absolute;
+  opacity: 0.1;
+  pointer-events: none;
+  z-index: 100;
+} */
+
+.label {
+  display: inline-block;
+  padding: 10px 20px;
+  margin: 5px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  background-color: #f0f0f0;
+  color: #333;
+  cursor: pointer;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+}
+
+.radio-input input[type="radio"]:checked + label {
+  background-color: #4caf50;
+  color: #fff;
+  border-color: #4caf50;
+}

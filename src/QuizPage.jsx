@@ -3,20 +3,24 @@ import React from "react";
 function QuizPage({ quizData, insertSelectedAnswer, checkAnswers }) {
   let quizElements = quizData.map((quiz) => {
     return (
-      <div className="question-container">
+      <div key={quiz.id} className="question-container">
         <p>{quiz.question}</p>
         {quiz.incorrect_answers.map((answer) => (
           <fieldset>
             <input
+              className="radio-input"
               name={quiz.id}
               type="radio"
-              id={`option-${answer}`}
+              id={`option-${quiz.id}`}
               value={answer}
+              checked={quiz.selected_answer === answer}
               onChange={(event) => {
                 insertSelectedAnswer(event, quiz.id);
               }}
             />
-            <label htmlFor={`option1-${answer}`}>{answer}</label>
+            <label className="label" htmlFor={`option-${quiz.id}`}>
+              {answer}
+            </label>
           </fieldset>
         ))}
       </div>

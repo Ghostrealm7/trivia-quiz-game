@@ -11,6 +11,7 @@ function App() {
   const [homePage, setHomePage] = useState(true);
   const [darkMode, setDarkMode] = useState(false);
   const [quizData, setQuizData] = useState([]);
+  // const [selectedAnswer, setSelectedAnswer] = useState("");
   const [gameOver, setGameOver] = useState(false);
 
   function checkAnswers() {
@@ -25,6 +26,9 @@ function App() {
     }
   }
 
+  function getNewQuiz() {}
+  // put axios call in a function so you can call it ousite useEffect
+
   // Shuffle algorithm - Fisher-Yates shuffle
   function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -35,14 +39,12 @@ function App() {
   }
   //function to update quizData array with selected_answer key
   function insertSelectedAnswer(event, id) {
+    const { value } = event.target;
+    console.log(value);
+    console.log("insert function fired");
     const updatedQuiz = quizData.map((quizQuestion) => {
-      // if (id == quizQuestion.id) {
-      //   return { ...quizQuestion, selected_answer: event.target.value };
-      // } else {
-      //   return { ...quizQuestion };
-      // }
       return id === quizQuestion.id
-        ? { ...quizQuestion, selected_answer: event.target.value }
+        ? { ...quizQuestion, selected_answer: value }
         : quizQuestion;
     });
     setQuizData((prevQuizData) => (prevQuizData = updatedQuiz));
