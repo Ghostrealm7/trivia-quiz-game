@@ -1,13 +1,13 @@
-import React from "react"
+import React from "react";
 
 function HomePage({ changePage }) {
   return (
     <div className="container">
-      <h1>Welcome to trivia quiz game</h1>
-      <p>Some Description Here</p>
+      <h1>Trivia Quiz Game</h1>
+      <p>Powered by Ghostrealm7</p>
       <button onClick={changePage}> Start Quiz!</button>
     </div>
-  )
+  );
 }
 
-export default HomePage
+export default HomePage;
