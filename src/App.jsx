@@ -13,6 +13,7 @@ function App() {
   const [quizData, setQuizData] = useState([]);
   const [correctAnswerCount, setCorrectAnswerCount] = useState(0);
   const [gameOver, setGameOver] = useState(false);
+  const [error, setError] = useState(null);
 
   function checkAnswers() {
     let count = 0;
@@ -32,25 +33,29 @@ function App() {
   }
 
   async function getNewQuiz() {
-    let response = await axios.get(
-      "https://opentdb.com/api.php?amount=5&category=9&difficulty=easy&type=multiple",
-    );
-    let quizQuestions = await response.data.results;
-    // Save correct_answer in the incorrect answer array, then shuffle the incorrect answer array and save in NewArray.
-    const newArray = quizQuestions.map((quizQuestion) => {
-      const newAnswers = [
-        ...quizQuestion.incorrect_answers,
-        quizQuestion.correct_answer,
-      ];
-      const shuffledAnswers = shuffle(newAnswers);
-      return {
-        id: nanoid(),
-        ...quizQuestion,
-        incorrect_answers: shuffledAnswers,
-        selected_answer: "",
-      };
-    });
-    setQuizData(newArray);
+    try {
+      let response = await axios.get(
+        "https://opentdb.com/api.php?amount=5&category=9&difficulty=easy&type=multiple",
+      );
+      let quizQuestions = await response.data.results;
+      // Save correct_answer in the incorrect answer array, then shuffle the incorrect answer array and save in NewArray.
+      const newArray = quizQuestions.map((quizQuestion) => {
+        const newAnswers = [
+          ...quizQuestion.incorrect_answers,
+          quizQuestion.correct_answer,
+        ];
+        const shuffledAnswers = shuffle(newAnswers);
+        return {
+          id: nanoid(),
+          ...quizQuestion,
+          incorrect_answers: shuffledAnswers,
+          selected_answer: "",
+        };
+      });
+      setQuizData(newArray);
+    } catch (err) {
+      console.log(err.message);
+    }
   }
 
   function newGame() {
